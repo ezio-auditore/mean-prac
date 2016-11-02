@@ -1,32 +1,17 @@
 export class MainController {
-  constructor ($timeout, webDevTec, toastr) {
-    'ngInject';
+	constructor ($http) {
+		'ngInject';
+		this.$http = $http;
+		this.getMessages();
+	}
 
-    this.awesomeThings = [];
-    this.classAnimation = '';
-    this.creationDate = 1477982224903;
-    this.toastr = toastr;
-
-    this.activate($timeout, webDevTec);
-  }
-
-  activate($timeout, webDevTec) {
-    this.getWebDevTec(webDevTec);
-    $timeout(() => {
-      this.classAnimation = 'rubberBand';
-    }, 4000);
-  }
-
-  getWebDevTec(webDevTec) {
-    this.awesomeThings = webDevTec.getTec();
-
-    angular.forEach(this.awesomeThings, (awesomeThing) => {
-      awesomeThing.rank = Math.random();
-    });
-  }
-
-  showToastr() {
-    this.toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
-    this.classAnimation = '';
-  }
+	getMessages(){
+		var vm = this;
+		this.$http.get('http://stark-network-kaustav-m.c9users.io/api/users').then(function(result){
+			vm.users = result.data.users;
+		});
+	}
+	postMessage(){
+		this.$http.post('http://localhost:5000/api/message',{msg : this.message});
+	}
 }
